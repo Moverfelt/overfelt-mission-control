@@ -11,3 +11,6 @@
 .day-copy{display:flex;flex-direction:column}.day-toggle strong{font-size:.96rem}.day-toggle small{font-size:.79rem;color:var(--muted);margin-top:4px;line-height:1.35}.chev{color:var(--gold2);font-size:1.1rem;transition:transform .2s}.mission-day.open .chev{transform:rotate(180deg)}
 .day-detail{display:none;padding:0 17px 17px}.mission-day.open .day-detail{display:block}.event{padding:14px 0;border-top:1px solid #2a2a30}.event:first-child{border-top:0}.event-head{display:flex;justify-content:space-between;gap:10px}.event-title{font-size:.94rem;font-weight:700}.event-time{font-size:.71rem;color:#e7cd8c;white-space:nowrap}.event-meta{font-size:.78rem;color:var(--muted);line-height:1.42;margin-top:5px}
 .classified-box{padding:15px;border-radius:15px;border:1px dashed #4a4334;background:#121216}@media(max-width:380px){.quick-grid{grid-template-columns:1fr}}
+
+/* Sprint 2.1 hotfix: splash disabled to prevent startup blocking */
+.splash{display:none!important}
