@@ -1,14 +1,35 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#09090b"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Mission Control"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="stylesheet" href="styles.css?v=6.0.0"><title>Overfelt Mission Control</title></head><body>
 <div id="launchSplash" class="launch-splash" aria-hidden="true">
-  <button id="dismissSplash" class="launch-splash-skip" type="button" aria-label="Skip launch animation">SKIP</button>
+  <button id="dismissSplash" class="launch-splash-skip" type="button" aria-label="Skip mission briefing">SKIP</button>
+
+  <div class="briefing-skyline" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+    <div class="briefing-sphere"></div>
+  </div>
+
   <div class="launch-splash-inner">
     <div class="launch-kicker">FATHER &amp; SON EXPEDITION</div>
     <div class="launch-title">OVERFELT</div>
     <div class="launch-subtitle">MISSION CONTROL</div>
     <div class="launch-line"></div>
-    <div class="launch-status"><span></span> INITIALIZING MISSION</div>
+
+    <div class="launch-status">
+      <span></span> MISSION BRIEFING
+    </div>
+
+    <p class="briefing-message">
+      Some trips are vacations. Some become memories for the rest of your life.
+    </p>
+
+    <button id="beginMission" class="briefing-begin" type="button">
+      LET'S GO
+    </button>
   </div>
 </div>
+
+<button id="replayBriefing" class="briefing-replay" type="button">
+  REPLAY BRIEFING
+</button>
 <div id="updateToast" class="update-toast" role="status" aria-live="polite">
   <span>A new Mission Control update is ready.</span>
   <button id="applyUpdate" type="button">UPDATE NOW</button>
@@ -106,7 +127,33 @@ function openPhotoViewer(url){document.getElementById('photoViewerImage').src=ur
 function closePhotoViewer(){const viewer=document.getElementById('photoViewer');viewer.classList.remove('show');viewer.setAttribute('aria-hidden','true')}
 function escapeHtml(value=''){return value.replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 async function exportArchive(){setText('archiveMsg','Building memory book…');const sections=[];for(const d of itinerary){const x=JSON.parse(localStorage.getItem(`omc-memory-${d.date}`)||'{}');const photo=await getPhoto(d.date);let image='';if(photo){const data=await fileToDataUrl(photo.blob);image=`<img src="${data}" alt="${escapeHtml(d.title)} photo">`}sections.push(`<section><h2>${escapeHtml(d.title)}</h2>${image}<h3>Best moment</h3><p>${escapeHtml(x.moment||'')}</p><h3>What made us laugh</h3><p>${escapeHtml(x.laugh||'')}</p><h3>Photo note</h3><p>${escapeHtml(x.photo||'')}</p></section>`)}const html=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Overfelt Mission Archive</title><style>body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif;max-width:760px;margin:0 auto;padding:40px 22px;color:#171717;background:#faf8f2}header{text-align:center;margin-bottom:45px}h1{letter-spacing:.15em}section{page-break-inside:avoid;border-top:2px solid #c4a35a;padding:30px 0}img{display:block;width:100%;max-height:560px;object-fit:contain;border-radius:16px;margin:18px 0}h2{margin-bottom:10px}h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:#836b35;margin-top:22px}p{white-space:pre-wrap;line-height:1.55}</style></head><body><header><div>FATHER &amp; SON EXPEDITION</div><h1>OVERFELT</h1><p>Las Vegas • August 2–7, 2026</p></header>${sections.join('')}</body></html>`;const blob=new Blob([html],{type:'text/html'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Overfelt_Mission_Memory_Book.html';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setText('archiveMsg','Memory book exported with notes and photos.')}
-function setupUI(){updateCountdown();setInterval(updateCountdown,1000);renderToday();renderSmartBriefing();renderMissionTimeline();setInterval(renderMissionTimeline,60000);renderItinerary();renderReservations();renderTravel();renderArchive();loadWeather();document.getElementById('refreshWeather').addEventListener('click',loadWeather);document.querySelectorAll('.segment-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.segment-btn').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.trip-panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tripPanel))}));const screens=document.querySelectorAll('.screen'),navButtons=document.querySelectorAll('.nav button');function showScreen(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));navButtons.forEach(b=>b.classList.toggle('active',b.dataset.screen===id));window.scrollTo({top:0,behavior:'smooth'})}navButtons.forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.go)));document.getElementById('unlock').addEventListener('click',()=>{const ok=document.getElementById('pin').value==='0802';document.getElementById('secret').classList.toggle('show',ok);setText('pinMsg',ok?'Access granted. Classified mission loaded.':'Access denied.');if(ok)localStorage.setItem('omcDadUnlocked','1')});if(localStorage.getItem('omcDadUnlocked')==='1')document.getElementById('secret').classList.add('show');document.querySelectorAll('[data-dad-check]').forEach(x=>{x.checked=localStorage.getItem('dad-'+x.dataset.dadCheck)==='1';x.addEventListener('change',()=>localStorage.setItem('dad-'+x.dataset.dadCheck,x.checked?'1':'0'))});document.getElementById('exportArchive').addEventListener('click',exportArchive);document.getElementById('clearArchive').addEventListener('click',async()=>{if(confirm('Clear every saved mission memory and photo on this device?')){itinerary.forEach(d=>localStorage.removeItem(`omc-memory-${d.date}`));await clearPhotos();await renderArchive();setText('archiveMsg','Archive cleared.')}});document.getElementById('closePhotoViewer').addEventListener('click',closePhotoViewer);document.getElementById('photoViewer').addEventListener('click',e=>{if(e.target.id==='photoViewer')closePhotoViewer()});const splash=document.getElementById('launchSplash');const dismiss=()=>{splash.classList.add('dismissed');sessionStorage.setItem('omcSplashSeen','1')};document.getElementById('dismissSplash').addEventListener('click',dismiss);splash.addEventListener('click',e=>{if(e.target===splash)dismiss()});if(sessionStorage.getItem('omcSplashSeen')==='1')splash.classList.add('dismissed');setTimeout(dismiss,1450)}
+function setupUI(){updateCountdown();setInterval(updateCountdown,1000);renderToday();renderSmartBriefing();renderMissionTimeline();setInterval(renderMissionTimeline,60000);renderItinerary();renderReservations();renderTravel();renderArchive();loadWeather();document.getElementById('refreshWeather').addEventListener('click',loadWeather);document.querySelectorAll('.segment-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.segment-btn').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.trip-panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tripPanel))}));const screens=document.querySelectorAll('.screen'),navButtons=document.querySelectorAll('.nav button');function showScreen(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));navButtons.forEach(b=>b.classList.toggle('active',b.dataset.screen===id));window.scrollTo({top:0,behavior:'smooth'})}navButtons.forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.go)));document.getElementById('unlock').addEventListener('click',()=>{const ok=document.getElementById('pin').value==='0802';document.getElementById('secret').classList.toggle('show',ok);setText('pinMsg',ok?'Access granted. Classified mission loaded.':'Access denied.');if(ok)localStorage.setItem('omcDadUnlocked','1')});if(localStorage.getItem('omcDadUnlocked')==='1')document.getElementById('secret').classList.add('show');document.querySelectorAll('[data-dad-check]').forEach(x=>{x.checked=localStorage.getItem('dad-'+x.dataset.dadCheck)==='1';x.addEventListener('change',()=>localStorage.setItem('dad-'+x.dataset.dadCheck,x.checked?'1':'0'))});document.getElementById('exportArchive').addEventListener('click',exportArchive);document.getElementById('clearArchive').addEventListener('click',async()=>{if(confirm('Clear every saved mission memory and photo on this device?')){itinerary.forEach(d=>localStorage.removeItem(`omc-memory-${d.date}`));await clearPhotos();await renderArchive();setText('archiveMsg','Archive cleared.')}});document.getElementById('closePhotoViewer').addEventListener('click',closePhotoViewer);document.getElementById('photoViewer').addEventListener('click',e=>{if(e.target.id==='photoViewer')closePhotoViewer()});const splash=document.getElementById('launchSplash');
+
+const dismissBriefing=()=>{
+  splash.classList.add('dismissed');
+  splash.setAttribute('aria-hidden','true');
+  sessionStorage.setItem('omcSplashSeen','1');
+};
+
+const showBriefing=()=>{
+  splash.classList.remove('dismissed');
+  splash.setAttribute('aria-hidden','false');
+};
+
+document.getElementById('dismissSplash').addEventListener('click',dismissBriefing);
+document.getElementById('beginMission').addEventListener('click',dismissBriefing);
+document.getElementById('replayBriefing').addEventListener('click',showBriefing);
+
+splash.addEventListener('click',e=>{
+  if(e.target===splash)dismissBriefing();
+});
+
+if(sessionStorage.getItem('omcSplashSeen')==='1'){
+  splash.classList.add('dismissed');
+}else{
+  showBriefing();
+}
+}
 setupUI();
 if('serviceWorker' in navigator){window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}`);const toast=document.getElementById('updateToast');let refreshing=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(refreshing)return;refreshing=true;location.reload()});const showUpdate=worker=>{toast.classList.add('show');document.getElementById('applyUpdate').onclick=()=>worker.postMessage({type:'SKIP_WAITING'})};if(reg.waiting)showUpdate(reg.waiting);reg.addEventListener('updatefound',()=>{const worker=reg.installing;if(!worker)return;worker.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller)showUpdate(worker)})});reg.update()}catch(e){console.warn('Offline mode unavailable',e)}})}
 </script></body></html>
