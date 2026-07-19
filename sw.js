@@ -1,6 +1,14 @@
-const CACHE='omc-v6.0.0';
-const CORE=['./','./index.html','./styles.css?v=6.0.0','./manifest.webmanifest','./icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE))));
-self.addEventListener('activate',e=>e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()])));
-self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
-self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;if(e.request.mode==='navigate'){e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put('./index.html',copy));return r}).catch(()=>caches.match('./index.html')));return}e.respondWith(caches.match(e.request).then(cached=>{const network=fetch(e.request).then(r=>{if(r&&r.ok){const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy))}return r}).catch(()=>cached);return cached||network}))});
+OVERFELT MISSION CONTROL — SPRINT 6.1
+
+Release highlights:
+- Fixed iPhone update prompt: now a tappable bottom toast, clear of the status bar/Dynamic Island.
+- Update prompt dismisses correctly and disappears after the update reloads.
+- One-time cinematic Mission Briefing with a permanent replay button inside unlocked Dad Mode.
+- Bundled offline Vegas skyline, Sphere and desert background visuals.
+- Improved touch targets, safe-area spacing, scrolling and last-screen memory.
+- Cache version upgraded to omc-v6.1.0.
+
+DEPLOYMENT
+Upload all files and folders to the root of the GitHub repository, replacing the current files. Keep the assets and icons folders intact. Commit and allow Vercel to deploy.
+
+On the first launch after deployment, tap UPDATE if the old version offers it. iPhone may briefly reload once as the new service worker takes control.
