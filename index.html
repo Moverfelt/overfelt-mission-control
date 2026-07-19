@@ -153,6 +153,7 @@ if(sessionStorage.getItem('omcSplashSeen')==='1'){
 }else{
   showBriefing();
 }
+}
 setupUI();
 if('serviceWorker' in navigator){window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}`);const toast=document.getElementById('updateToast');let refreshing=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(refreshing)return;refreshing=true;location.reload()});const showUpdate=worker=>{toast.classList.add('show');document.getElementById('applyUpdate').onclick=()=>worker.postMessage({type:'SKIP_WAITING'})};if(reg.waiting)showUpdate(reg.waiting);reg.addEventListener('updatefound',()=>{const worker=reg.installing;if(!worker)return;worker.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller)showUpdate(worker)})});reg.update()}catch(e){console.warn('Offline mode unavailable',e)}})}
 </script></body></html>
