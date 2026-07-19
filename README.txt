@@ -1,15 +1,7 @@
-OVERFELT MISSION CONTROL — SPRINT 5 (v5.0.0)
+OVERFELT MISSION CONTROL — SPRINT 6
 
-Added:
-- Safe cinematic launch sequence with CSS fail-safe and tap-to-skip
-- Actual photo uploads from iPhone library or camera
-- Private IndexedDB photo storage
-- Photo thumbnails, full-screen viewer, replace/remove workflow
-- Exportable HTML memory book with notes and embedded photos
-- Visible app version and update-ready prompt
-- Improved service-worker update flow and cache versioning
+Deploy every file and folder in this package to the root of the GitHub repository. Vercel should redeploy automatically.
 
-Dad Mode PIN: 0802
+Added: Flight Command Center, Apple Wallet launch, AA check-in/trip/status links, DFW connection assistant, expanded ARIA tools, Vegas quick launches, smart check-in briefing, Mission Timeline, and v6 cache.
 
-DEPLOY:
-Upload every file and the icons folder to the GitHub repository root, replace matching files, and commit. Vercel will deploy automatically.
+Apple Wallet note: iOS controls whether a website can open Wallet. Boarding passes must first be added from American Airlines. The AA TRIP button remains the dependable fallback.
