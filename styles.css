@@ -128,7 +128,7 @@
 .launch-splash.playing .briefing-sphere{animation:sphereWake 2.1s ease 1.8s forwards,sphereIdle 2.3s ease-in-out 3.9s infinite}
 .launch-splash.finale .briefing-stage{animation:briefingFadeAway .48s ease forwards!important}
 .launch-splash.finale .briefing-sphere{animation:sphereFinale 2.25s linear forwards!important}
-.launch-splash.finale .briefing-stars span{animation:fragmentBurst 4.8s cubic-bezier(.12,.58,.2,1) calc(1.55s + var(--delay)) forwards}
+.launch-splash.finale .briefing-stars span{animation:fragmentBurst 4.8s linear 1.55s forwards}
 .launch-splash.show-aaron-message .aaron-message{animation:aaronReveal 3.4s ease forwards}
 @keyframes briefingReveal{from{opacity:0;transform:translateY(12px);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
 @keyframes briefingFadeAway{to{opacity:0;transform:translateY(-9px);filter:blur(3px)}}
