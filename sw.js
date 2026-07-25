@@ -1,9 +1,9 @@
-const CACHE = 'omc-v6.2.1';
+const CACHE = 'omc-v6.2.2';
 const CORE = [
   './',
   './index.html',
-  './styles.css?v=6.2.1',
-  './app.js?v=6.2.1',
+  './styles.css?v=6.2.2',
+  './app.js?v=6.2.2',
   './manifest.webmanifest',
   './icons/icon-180.png',
   './icons/icon-192.png',
