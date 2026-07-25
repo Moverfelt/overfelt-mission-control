@@ -92,9 +92,10 @@
 .briefing-skyline > span:nth-child(5){left:82%;height:70px;}
 
 .briefing-sphere{
-    position:absolute;
+    position:fixed;
     right:18%;
     bottom:118px;
+    z-index:2;
     width:22px;
     height:22px;
     border-radius:50%;
@@ -115,7 +116,7 @@
 .briefing-sphere{opacity:.16;transform:scale(.72)}
 .sphere-core{display:block;width:100%;height:100%;border-radius:inherit;background:radial-gradient(circle at 38% 35%,#fff8d3 0 8%,#ffd86f 28%,#ba8120 66%,#34210a 100%)}
 .briefing-stars{position:fixed;inset:0;z-index:3;pointer-events:none;overflow:hidden}
-.briefing-stars span{position:absolute;left:82%;top:calc(100% - 129px);width:var(--size);height:var(--size);opacity:0;background:var(--fragment-color);box-shadow:0 0 7px var(--fragment-glow);clip-path:polygon(0 35%,32% 0,100% 18%,78% 100%,18% 82%);transform:translate(-50%,-50%) scale(.12) rotate(0)}
+.briefing-stars span{position:absolute;left:var(--origin-x);top:var(--origin-y);width:var(--size);height:var(--size);opacity:0;background:var(--fragment-color);clip-path:polygon(0 35%,32% 0,100% 18%,78% 100%,18% 82%);transform:translate(-50%,-50%) scale(.12) rotate(0);will-change:transform,opacity}
 .briefing-stars span:nth-child(3n){clip-path:polygon(0 12%,100% 0,72% 100%,18% 76%)}
 .briefing-stars span:nth-child(3n+1){clip-path:polygon(50% 0,100% 38%,68% 100%,0 72%,18% 22%)}
 .aaron-message{position:fixed;left:50%;bottom:17%;z-index:6;width:min(88vw,460px);opacity:0;transform:translate(-50%,12px);color:#f4dfaa;font-size:.92rem;letter-spacing:.08em;text-align:center;text-shadow:0 0 18px rgba(212,179,101,.45)}

@@ -1,4 +1,4 @@
-const APP_VERSION='6.2.4';
+const APP_VERSION='6.2.5';
 const trip=new Date('2026-08-02T12:46:00-05:00');
 const places={aria:{name:'ARIA Resort & Casino',address:'3730 S Las Vegas Blvd, Las Vegas, NV 89158',maps:'https://maps.apple.com/?q=ARIA%20Resort%20%26%20Casino&address=3730%20S%20Las%20Vegas%20Blvd%2C%20Las%20Vegas%2C%20NV%2089158'},sphere:{name:'Sphere',address:'255 Sands Ave, Las Vegas, NV 89169',maps:'https://maps.apple.com/?q=Sphere&address=255%20Sands%20Ave%2C%20Las%20Vegas%2C%20NV%2089169'},area15:{name:'AREA15',address:'3215 S Rancho Dr, Las Vegas, NV 89102',maps:'https://maps.apple.com/?q=AREA15&address=3215%20S%20Rancho%20Dr%2C%20Las%20Vegas%2C%20NV%2089102'},bavettes:{name:"Bavette's Steakhouse & Bar",address:'3770 S Las Vegas Blvd, Las Vegas, NV 89109',maps:'https://maps.apple.com/?q=Bavette%27s%20Steakhouse%20%26%20Bar&address=3770%20S%20Las%20Vegas%20Blvd%2C%20Las%20Vegas%2C%20NV%2089109'},las:{name:'Harry Reid International Airport',address:'5757 Wayne Newton Blvd, Las Vegas, NV 89119',maps:'https://maps.apple.com/?q=Harry%20Reid%20International%20Airport&address=5757%20Wayne%20Newton%20Blvd%2C%20Las%20Vegas%2C%20NV%2089119'}};
 const uber=p=>`https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(p.address)}&dropoff[nickname]=${encodeURIComponent(p.name)}`;
@@ -49,37 +49,44 @@ function setupUI(){updateCountdown();setInterval(updateCountdown,1000);renderTod
 
 const starField=document.getElementById('starField');
 const fragmentColors=[
-  ['#fff8d3','rgba(255,242,178,.9)'],
-  ['#f4cd6b','rgba(244,205,107,.82)'],
-  ['#d99a32','rgba(217,154,50,.72)'],
-  ['#fff','rgba(255,255,255,.82)']
+  '#fff8d3',
+  '#f4cd6b',
+  '#d99a32',
+  '#fff'
 ];
-for(let i=0;i<84;i++){
-  const fragment=document.createElement('span');
-  const angle=(Math.PI*2*i/84)+((i%7)-3)*.017;
-  const distance=32+(i*29%58);
-  const x=Math.cos(angle)*distance;
-  const y=Math.sin(angle)*distance;
-  const color=fragmentColors[i%fragmentColors.length];
-  fragment.style.setProperty('--size',`${2+(i*7%6)}px`);
-  fragment.style.setProperty('--delay',`${(i%9)*.018}s`);
-  fragment.style.setProperty('--fragment-color',color[0]);
-  fragment.style.setProperty('--fragment-glow',color[1]);
-  fragment.style.setProperty('--burst-x',`${x*.43}vw`);
-  fragment.style.setProperty('--burst-y',`${y*.43}vh`);
-  fragment.style.setProperty('--coast-x',`${x*.72}vw`);
-  fragment.style.setProperty('--coast-y',`${y*.72}vh`);
-  fragment.style.setProperty('--fade-x',`${x*.88}vw`);
-  fragment.style.setProperty('--fade-y',`${y*.88}vh`);
-  fragment.style.setProperty('--final-x',`${x}vw`);
-  fragment.style.setProperty('--final-y',`${y}vh`);
-  const spin=(i%2?1:-1)*(120+(i*47%420));
-  fragment.style.setProperty('--burst-spin',`${spin*.36}deg`);
-  fragment.style.setProperty('--coast-spin',`${spin*.68}deg`);
-  fragment.style.setProperty('--fade-spin',`${spin*.86}deg`);
-  fragment.style.setProperty('--final-spin',`${spin}deg`);
-  starField.appendChild(fragment);
-}
+const buildExplosionFragments=()=>{
+  starField.replaceChildren();
+  const width=window.innerWidth;
+  const height=window.innerHeight;
+  const originX=width*.82;
+  const originY=height-129;
+  for(let i=0;i<52;i++){
+    const fragment=document.createElement('span');
+    const targetX=width*(.035+(((i*47)%101)/100)*.93);
+    const targetY=height*(.025+(((i*67)%103)/102)*.86);
+    const x=targetX-originX;
+    const y=targetY-originY;
+    const spin=(i%2?1:-1)*(90+(i*43%330));
+    fragment.style.setProperty('--origin-x',`${originX}px`);
+    fragment.style.setProperty('--origin-y',`${originY}px`);
+    fragment.style.setProperty('--size',`${2+(i*5%6)}px`);
+    fragment.style.setProperty('--delay',`${(i%7)*.015}s`);
+    fragment.style.setProperty('--fragment-color',fragmentColors[i%fragmentColors.length]);
+    fragment.style.setProperty('--burst-x',`${x*.38}px`);
+    fragment.style.setProperty('--burst-y',`${y*.38}px`);
+    fragment.style.setProperty('--coast-x',`${x*.7}px`);
+    fragment.style.setProperty('--coast-y',`${y*.7}px`);
+    fragment.style.setProperty('--fade-x',`${x*.9}px`);
+    fragment.style.setProperty('--fade-y',`${y*.9}px`);
+    fragment.style.setProperty('--final-x',`${x}px`);
+    fragment.style.setProperty('--final-y',`${y}px`);
+    fragment.style.setProperty('--burst-spin',`${spin*.34}deg`);
+    fragment.style.setProperty('--coast-spin',`${spin*.64}deg`);
+    fragment.style.setProperty('--fade-spin',`${spin*.84}deg`);
+    fragment.style.setProperty('--final-spin',`${spin}deg`);
+    starField.appendChild(fragment);
+  }
+};
 
 const dismissBriefing=()=>{
   splash.classList.add('dismissed');
@@ -99,6 +106,7 @@ const resetBriefing=()=>{
 
 const launchMission=()=>{
   if(splash.classList.contains('finale'))return;
+  buildExplosionFragments();
   splash.classList.add('finale');
   setTimeout(()=>{
     splash.classList.add('show-aaron-message');
