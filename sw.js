@@ -1,9 +1,9 @@
-const CACHE = 'omc-v6.2.8';
+const CACHE = 'omc-v6.2.9';
 const CORE = [
   './',
   './index.html',
-  './styles.css?v=6.2.8',
-  './app.js?v=6.2.8',
+  './styles.css?v=6.2.9',
+  './app.js?v=6.2.9',
   './manifest.webmanifest',
   './icons/icon-180.png',
   './icons/icon-192.png',
@@ -13,7 +13,12 @@ const CORE = [
 ];
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)));
+  event.waitUntil(
+    caches
+      .open(CACHE)
+      .then(cache => cache.addAll(CORE))
+      .then(() => self.skipWaiting()),
+  );
 });
 
 self.addEventListener('activate', event => {
