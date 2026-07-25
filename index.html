@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#09090b"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Mission Control"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="stylesheet" href="styles.css?v=6.2.10"><title>Overfelt Mission Control</title></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#09090b"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Mission Control"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="stylesheet" href="styles.css?v=6.2.11"><title>Overfelt Mission Control</title></head><body>
 <div id="launchSplash" class="launch-splash" aria-hidden="true">
   <button id="dismissSplash" class="launch-splash-skip" type="button" aria-label="Skip mission briefing">SKIP</button>
 
@@ -51,15 +51,11 @@
   </div>
 </div>
 
-<div id="updateToast" class="update-toast" role="status" aria-live="polite">
-  <span>A new Mission Control update is ready.</span>
-  <button id="applyUpdate" type="button">UPDATE NOW</button>
-</div>
 <div id="photoViewer" class="photo-viewer" aria-hidden="true">
   <button id="closePhotoViewer" class="photo-viewer-close" type="button" aria-label="Close photo">×</button>
   <img id="photoViewerImage" alt="Mission archive photo">
 </div>
-<main class="app"><header class="topbar"><div><div class="brand">OVERFELT</div><div class="brand-sub">MISSION CONTROL</div></div><div class="status"><span></span> READY <small>v6</small></div></header>
+<main class="app"><header class="topbar"><div><div class="brand">OVERFELT</div><div class="brand-sub">MISSION CONTROL</div></div><div class="topbar-statuses"><div class="status"><span></span> READY <small>v6</small></div><button id="updateStatus" class="update-status" type="button" aria-live="polite" disabled><span></span> LATEST</button></div></header>
 <section id="home" class="screen active"><div class="hero"><div class="eyebrow">T-MINUS</div><div class="countdown-live" aria-label="Live trip countdown">
   <div><span id="cdDays">--</span><small>DAYS</small></div>
   <div><span id="cdHours">--</span><small>HRS</small></div>
@@ -100,4 +96,4 @@
 <div id="archiveDays" class="archive-list"></div>
 <article class="card gap"><div class="label">Archive Tools</div><div class="action-row"><button id="exportArchive" class="action-button" type="button">EXPORT MEMORY BOOK</button><button id="clearArchive" class="action-button danger" type="button">CLEAR ARCHIVE</button></div><div id="archiveMsg" class="tiny" aria-live="polite"></div></article>
 </section></main>
-<nav class="nav"><button class="active" data-screen="home">HOME</button><button data-screen="today">TODAY</button><button data-screen="trip">TRIP</button><button data-screen="dad">DAD</button><button data-screen="archive">ARCHIVE</button></nav><script src="app.js?v=6.2.10" defer></script></body></html>
+<nav class="nav"><button class="active" data-screen="home">HOME</button><button data-screen="today">TODAY</button><button data-screen="trip">TRIP</button><button data-screen="dad">DAD</button><button data-screen="archive">ARCHIVE</button></nav><script src="app.js?v=6.2.11" defer></script></body></html>
