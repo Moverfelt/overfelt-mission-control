@@ -115,6 +115,10 @@
 .briefing-ready{margin-top:10px;color:var(--gold2);font-size:1.5rem;font-weight:800;letter-spacing:.28em;text-indent:.28em;text-shadow:0 0 14px rgba(242,217,143,.48)}
 .briefing-sphere{opacity:.16;transform:scale(.72)}
 .sphere-core{display:block;width:100%;height:100%;border-radius:inherit;background:radial-gradient(circle at 38% 35%,#fff8d3 0 8%,#ffd86f 28%,#ba8120 66%,#34210a 100%)}
+.destination-mark{position:fixed;right:4.5%;bottom:166px;z-index:1;width:138px;height:74px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#d4b365;border:1px solid rgba(212,179,101,.42);clip-path:polygon(18% 0,82% 0,100% 50%,82% 100%,18% 100%,0 50%);opacity:0;transform:translateY(9px) rotate(-2deg);filter:drop-shadow(0 0 12px rgba(212,179,101,.13))}
+.destination-mark:before{content:"✦";position:absolute;left:9px;top:-9px;color:#f1d98f;font-size:20px;text-shadow:0 0 10px rgba(212,179,101,.55)}
+.destination-mark span,.destination-mark small{font-size:.42rem;letter-spacing:.19em}
+.destination-mark strong{font-size:.8rem;letter-spacing:.11em;line-height:1}
 .briefing-stars{position:fixed;inset:0;z-index:3;pointer-events:none;overflow:hidden}
 .briefing-stars span{position:absolute;left:var(--origin-x);top:var(--origin-y);width:var(--size);height:var(--size);opacity:0;background:var(--fragment-color);clip-path:polygon(0 35%,32% 0,100% 18%,78% 100%,18% 82%);transform:translate(-50%,-50%) scale(.12) rotate(0);will-change:transform,opacity}
 .briefing-stars span:nth-child(3n){clip-path:polygon(0 12%,100% 0,72% 100%,18% 76%)}
@@ -126,13 +130,17 @@
 .launch-splash.playing .briefing-stage-action{animation:briefingReveal .9s ease 4.85s forwards}
 .launch-splash.playing .briefing-skyline{animation:skylineWake 3.2s ease .75s forwards}
 .launch-splash.playing .briefing-sphere{animation:sphereWake 2.1s ease 1.8s forwards,sphereIdle 2.3s ease-in-out 3.9s infinite}
+.launch-splash.playing .destination-mark{animation:destinationReveal 1.7s ease 2.45s forwards}
 .launch-splash.finale .briefing-stage{animation:briefingFadeAway .48s ease forwards!important}
+.launch-splash.finale .destination-mark{animation:destinationFade .65s ease forwards!important}
 .launch-splash.finale .briefing-sphere{animation:sphereFinale 2.25s linear forwards!important}
 .launch-splash.finale .briefing-stars span{animation:fragmentBurst var(--duration) linear calc(1.5s + var(--delay)) forwards}
 .launch-splash.show-aaron-message .aaron-message{animation:aaronReveal 3.4s ease forwards}
 @keyframes briefingReveal{from{opacity:0;transform:translateY(12px);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
 @keyframes briefingFadeAway{to{opacity:0;transform:translateY(-9px);filter:blur(3px)}}
 @keyframes skylineWake{from{opacity:.18;filter:brightness(.4)}to{opacity:1;filter:brightness(1.12)}}
+@keyframes destinationReveal{from{opacity:0;transform:translateY(9px) rotate(-2deg)}to{opacity:.46;transform:translateY(0) rotate(-2deg)}}
+@keyframes destinationFade{to{opacity:0;transform:translateY(-5px) rotate(-2deg)}}
 @keyframes sphereWake{from{opacity:.16;transform:scale(.72);filter:brightness(.55)}to{opacity:1;transform:scale(1);filter:brightness(1.08)}}
 @keyframes sphereIdle{0%,100%{transform:scale(1)}50%{transform:scale(1.16);box-shadow:0 0 20px #fff1ad,0 0 48px #d4b365,0 0 88px rgba(212,179,101,.74)}}
 @keyframes sphereFinale{
