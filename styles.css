@@ -85,11 +85,11 @@
     box-shadow:0 0 18px rgba(255,208,90,.08);
 }
 
-.briefing-skyline span:nth-child(1){left:8%;height:80px;}
-.briefing-skyline span:nth-child(2){left:22%;height:120px;}
-.briefing-skyline span:nth-child(3){left:44%;height:95px;}
-.briefing-skyline span:nth-child(4){left:63%;height:140px;}
-.briefing-skyline span:nth-child(5){left:82%;height:70px;}
+.briefing-skyline > span:nth-child(1){left:8%;height:80px;}
+.briefing-skyline > span:nth-child(2){left:22%;height:120px;}
+.briefing-skyline > span:nth-child(3){left:44%;height:95px;}
+.briefing-skyline > span:nth-child(4){left:63%;height:140px;}
+.briefing-skyline > span:nth-child(5){left:82%;height:70px;}
 
 .briefing-sphere{
     position:absolute;
@@ -114,7 +114,7 @@
 .briefing-ready{margin-top:10px;color:var(--gold2);font-size:1.5rem;font-weight:800;letter-spacing:.28em;text-indent:.28em;text-shadow:0 0 14px rgba(242,217,143,.48)}
 .briefing-sphere{opacity:.16;transform:scale(.72)}
 .sphere-core{display:block;width:100%;height:100%;border-radius:inherit;background:radial-gradient(circle at 38% 35%,#fff8d3 0 8%,#ffd86f 28%,#ba8120 66%,#34210a 100%)}
-.briefing-stars{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:0;transform:scale(.06);transform-origin:82% 72%;background-image:radial-gradient(circle,#fff 0 1px,transparent 1.8px),radial-gradient(circle,#f4cd6b 0 1.3px,transparent 2px),radial-gradient(circle,#fff4c4 0 .9px,transparent 1.7px);background-position:0 0,23px 31px,47px 11px;background-size:53px 59px,71px 83px,89px 67px}
+.briefing-stars{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:0;transform:scale(.06);transform-origin:82% calc(100% - 129px);background-image:radial-gradient(circle,#fff 0 1px,transparent 1.8px),radial-gradient(circle,#f4cd6b 0 1.3px,transparent 2px),radial-gradient(circle,#fff4c4 0 .9px,transparent 1.7px);background-position:0 0,23px 31px,47px 11px;background-size:53px 59px,71px 83px,89px 67px}
 .aaron-message{position:fixed;left:50%;bottom:17%;z-index:6;width:min(88vw,460px);opacity:0;transform:translate(-50%,12px);color:#f4dfaa;font-size:.92rem;letter-spacing:.08em;text-align:center;text-shadow:0 0 18px rgba(212,179,101,.45)}
 .launch-splash.playing .briefing-stage-brand{animation:briefingReveal 1s ease .35s forwards}
 .launch-splash.playing .briefing-stage-message{animation:briefingReveal 1s ease 1.85s forwards}
@@ -123,8 +123,8 @@
 .launch-splash.playing .briefing-skyline{animation:skylineWake 3.2s ease .75s forwards}
 .launch-splash.playing .briefing-sphere{animation:sphereWake 2.1s ease 1.8s forwards,sphereIdle 2.3s ease-in-out 3.9s infinite}
 .launch-splash.finale .briefing-stage{animation:briefingFadeAway .48s ease forwards!important}
-.launch-splash.finale .briefing-sphere{animation:sphereFinale .85s cubic-bezier(.2,.7,.2,1) forwards!important}
-.launch-splash.finale .briefing-stars{animation:starBurst 1.7s cubic-bezier(.12,.72,.2,1) forwards}
+.launch-splash.finale .briefing-sphere{animation:sphereFinale 1.15s cubic-bezier(.16,.78,.18,1) forwards!important}
+.launch-splash.finale .briefing-stars{animation:starBurst 4.2s linear forwards}
 .launch-splash.show-aaron-message .aaron-message{animation:aaronReveal 2.1s ease forwards}
 @keyframes briefingReveal{from{opacity:0;transform:translateY(12px);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
 @keyframes briefingFadeAway{to{opacity:0;transform:translateY(-9px);filter:blur(3px)}}
@@ -132,7 +132,14 @@
 @keyframes sphereWake{from{opacity:.16;transform:scale(.72);filter:brightness(.55)}to{opacity:1;transform:scale(1);filter:brightness(1.08)}}
 @keyframes sphereIdle{0%,100%{transform:scale(1)}50%{transform:scale(1.16);box-shadow:0 0 20px #fff1ad,0 0 48px #d4b365,0 0 88px rgba(212,179,101,.74)}}
 @keyframes sphereFinale{0%{opacity:1;transform:scale(1)}45%{opacity:1;transform:scale(2.5);filter:brightness(3.2)}100%{opacity:0;transform:scale(10);filter:brightness(5)}}
-@keyframes starBurst{0%{opacity:0;transform:scale(.06) rotate(0)}18%{opacity:1}100%{opacity:0;transform:scale(5.7) rotate(17deg)}}
+@keyframes starBurst{
+  0%{opacity:0;transform:scale(.06) rotate(0)}
+  10%{opacity:1;transform:scale(1.7) rotate(3deg)}
+  28%{opacity:.96;transform:scale(3.6) rotate(8deg)}
+  62%{opacity:.62;transform:scale(5.25) rotate(13deg)}
+  84%{opacity:.24;transform:scale(6.05) rotate(16deg)}
+  100%{opacity:0;transform:scale(6.45) rotate(18deg)}
+}
 @keyframes aaronReveal{0%{opacity:0;transform:translate(-50%,12px)}25%,70%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-8px)}}
 @media(prefers-reduced-motion:reduce){.launch-splash *{animation-duration:.01ms!important;animation-delay:0s!important}.launch-splash{transition-duration:.01ms}}
 /* Sprint 6 */
