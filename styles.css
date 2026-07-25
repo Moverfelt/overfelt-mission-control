@@ -114,7 +114,7 @@
 .briefing-ready{margin-top:10px;color:var(--gold2);font-size:1.5rem;font-weight:800;letter-spacing:.28em;text-indent:.28em;text-shadow:0 0 14px rgba(242,217,143,.48)}
 .briefing-sphere{opacity:.16;transform:scale(.72)}
 .sphere-core{display:block;width:100%;height:100%;border-radius:inherit;background:radial-gradient(circle at 38% 35%,#fff8d3 0 8%,#ffd86f 28%,#ba8120 66%,#34210a 100%)}
-.briefing-stars{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:0;transform:scale(.06);transform-origin:82% calc(100% - 129px);background-image:radial-gradient(circle,#fff 0 1px,transparent 1.8px),radial-gradient(circle,#f4cd6b 0 1.3px,transparent 2px),radial-gradient(circle,#fff4c4 0 .9px,transparent 1.7px);background-position:0 0,23px 31px,47px 11px;background-size:53px 59px,71px 83px,89px 67px}
+.briefing-stars{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:0;transform:scale(.06);transform-origin:82% calc(100% - 129px);background-image:radial-gradient(circle,#fff 0 1px,transparent 1.8px),radial-gradient(circle,#f4cd6b 0 1.3px,transparent 2px),radial-gradient(circle,#fff4c4 0 .9px,transparent 1.7px);background-position:0 0,23px 31px,47px 11px;background-size:53px 59px,71px 83px,89px 67px;-webkit-mask-image:radial-gradient(circle at 82% calc(100% - 129px),#000 0 42%,rgba(0,0,0,.9) 58%,transparent 78%);mask-image:radial-gradient(circle at 82% calc(100% - 129px),#000 0 42%,rgba(0,0,0,.9) 58%,transparent 78%)}
 .aaron-message{position:fixed;left:50%;bottom:17%;z-index:6;width:min(88vw,460px);opacity:0;transform:translate(-50%,12px);color:#f4dfaa;font-size:.92rem;letter-spacing:.08em;text-align:center;text-shadow:0 0 18px rgba(212,179,101,.45)}
 .launch-splash.playing .briefing-stage-brand{animation:briefingReveal 1s ease .35s forwards}
 .launch-splash.playing .briefing-stage-message{animation:briefingReveal 1s ease 1.85s forwards}
@@ -123,15 +123,25 @@
 .launch-splash.playing .briefing-skyline{animation:skylineWake 3.2s ease .75s forwards}
 .launch-splash.playing .briefing-sphere{animation:sphereWake 2.1s ease 1.8s forwards,sphereIdle 2.3s ease-in-out 3.9s infinite}
 .launch-splash.finale .briefing-stage{animation:briefingFadeAway .48s ease forwards!important}
-.launch-splash.finale .briefing-sphere{animation:sphereFinale 1.15s cubic-bezier(.16,.78,.18,1) forwards!important}
-.launch-splash.finale .briefing-stars{animation:starBurst 4.8s linear forwards}
+.launch-splash.finale .briefing-sphere{animation:sphereFinale 2.25s linear forwards!important}
+.launch-splash.finale .briefing-stars{animation:starBurst 4.8s linear 1.55s forwards}
 .launch-splash.show-aaron-message .aaron-message{animation:aaronReveal 3.4s ease forwards}
 @keyframes briefingReveal{from{opacity:0;transform:translateY(12px);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
 @keyframes briefingFadeAway{to{opacity:0;transform:translateY(-9px);filter:blur(3px)}}
 @keyframes skylineWake{from{opacity:.18;filter:brightness(.4)}to{opacity:1;filter:brightness(1.12)}}
 @keyframes sphereWake{from{opacity:.16;transform:scale(.72);filter:brightness(.55)}to{opacity:1;transform:scale(1);filter:brightness(1.08)}}
 @keyframes sphereIdle{0%,100%{transform:scale(1)}50%{transform:scale(1.16);box-shadow:0 0 20px #fff1ad,0 0 48px #d4b365,0 0 88px rgba(212,179,101,.74)}}
-@keyframes sphereFinale{0%{opacity:1;transform:scale(1)}45%{opacity:1;transform:scale(2.5);filter:brightness(3.2)}100%{opacity:0;transform:scale(10);filter:brightness(5)}}
+@keyframes sphereFinale{
+  0%,22%{opacity:1;transform:translate(0,0) scale(1);filter:brightness(1.08)}
+  30%{transform:translate(-1px,0) scale(1.08);filter:brightness(1.25)}
+  35%{transform:translate(2px,-1px) scale(1.12);filter:brightness(1.4)}
+  40%{transform:translate(-2px,1px) scale(1.16);filter:brightness(1.55)}
+  45%{transform:translate(2px,0) scale(1.2);filter:brightness(1.75)}
+  50%{transform:translate(-1px,-1px) scale(1.25);filter:brightness(2)}
+  58%{opacity:1;transform:translate(0,0) scale(1.5);filter:brightness(2.7)}
+  70%{opacity:1;transform:scale(2.8);filter:brightness(4)}
+  100%{opacity:0;transform:scale(10);filter:brightness(5)}
+}
 @keyframes starBurst{
   0%{opacity:0;transform:scale(.06) rotate(0)}
   9%{opacity:1;transform:scale(1.85) rotate(3deg)}
