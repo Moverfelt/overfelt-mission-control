@@ -1,14 +1,69 @@
-OVERFELT MISSION CONTROL — SPRINT 6.1
+const CACHE = 'omc-v6.2.0';
+const CORE = [
+  './',
+  './index.html',
+  './styles.css?v=6.2.0',
+  './app.js?v=6.2.0',
+  './manifest.webmanifest',
+  './icons/icon-180.png',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './desert-lines.svg',
+  './sphere-grid.svg',
+];
 
-Release highlights:
-- Fixed iPhone update prompt: now a tappable bottom toast, clear of the status bar/Dynamic Island.
-- Update prompt dismisses correctly and disappears after the update reloads.
-- One-time cinematic Mission Briefing with a permanent replay button inside unlocked Dad Mode.
-- Bundled offline Vegas skyline, Sphere and desert background visuals.
-- Improved touch targets, safe-area spacing, scrolling and last-screen memory.
-- Cache version upgraded to omc-v6.1.0.
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)));
+});
 
-DEPLOYMENT
-Upload all files and folders to the root of the GitHub repository, replacing the current files. Keep the assets and icons folders intact. Commit and allow Vercel to deploy.
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    Promise.all([
+      caches
+        .keys()
+        .then(keys =>
+          Promise.all(
+            keys.filter(key => key !== CACHE).map(key => caches.delete(key)),
+          ),
+        ),
+      self.clients.claim(),
+    ]),
+  );
+});
 
-On the first launch after deployment, tap UPDATE if the old version offers it. iPhone may briefly reload once as the new service worker takes control.
+self.addEventListener('message', event => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
+});
+
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return;
+
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          const copy = response.clone();
+          caches.open(CACHE).then(cache => cache.put('./index.html', copy));
+          return response;
+        })
+        .catch(() => caches.match('./index.html')),
+    );
+    return;
+  }
+
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      const network = fetch(event.request)
+        .then(response => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE).then(cache => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => cached);
+
+      return cached || network;
+    }),
+  );
+});
