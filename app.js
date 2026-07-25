@@ -1,4 +1,4 @@
-const APP_VERSION='6.2.3';
+const APP_VERSION='6.2.4';
 const trip=new Date('2026-08-02T12:46:00-05:00');
 const places={aria:{name:'ARIA Resort & Casino',address:'3730 S Las Vegas Blvd, Las Vegas, NV 89158',maps:'https://maps.apple.com/?q=ARIA%20Resort%20%26%20Casino&address=3730%20S%20Las%20Vegas%20Blvd%2C%20Las%20Vegas%2C%20NV%2089158'},sphere:{name:'Sphere',address:'255 Sands Ave, Las Vegas, NV 89169',maps:'https://maps.apple.com/?q=Sphere&address=255%20Sands%20Ave%2C%20Las%20Vegas%2C%20NV%2089169'},area15:{name:'AREA15',address:'3215 S Rancho Dr, Las Vegas, NV 89102',maps:'https://maps.apple.com/?q=AREA15&address=3215%20S%20Rancho%20Dr%2C%20Las%20Vegas%2C%20NV%2089102'},bavettes:{name:"Bavette's Steakhouse & Bar",address:'3770 S Las Vegas Blvd, Las Vegas, NV 89109',maps:'https://maps.apple.com/?q=Bavette%27s%20Steakhouse%20%26%20Bar&address=3770%20S%20Las%20Vegas%20Blvd%2C%20Las%20Vegas%2C%20NV%2089109'},las:{name:'Harry Reid International Airport',address:'5757 Wayne Newton Blvd, Las Vegas, NV 89119',maps:'https://maps.apple.com/?q=Harry%20Reid%20International%20Airport&address=5757%20Wayne%20Newton%20Blvd%2C%20Las%20Vegas%2C%20NV%2089119'}};
 const uber=p=>`https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(p.address)}&dropoff[nickname]=${encodeURIComponent(p.name)}`;
@@ -46,6 +46,40 @@ function closePhotoViewer(){const viewer=document.getElementById('photoViewer');
 function escapeHtml(value=''){return value.replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 async function exportArchive(){setText('archiveMsg','Building memory book…');const sections=[];for(const d of itinerary){const x=JSON.parse(localStorage.getItem(`omc-memory-${d.date}`)||'{}');const photo=await getPhoto(d.date);let image='';if(photo){const data=await fileToDataUrl(photo.blob);image=`<img src="${data}" alt="${escapeHtml(d.title)} photo">`}sections.push(`<section><h2>${escapeHtml(d.title)}</h2>${image}<h3>Best moment</h3><p>${escapeHtml(x.moment||'')}</p><h3>What made us laugh</h3><p>${escapeHtml(x.laugh||'')}</p><h3>Photo note</h3><p>${escapeHtml(x.photo||'')}</p></section>`)}const html=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Overfelt Mission Archive</title><style>body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif;max-width:760px;margin:0 auto;padding:40px 22px;color:#171717;background:#faf8f2}header{text-align:center;margin-bottom:45px}h1{letter-spacing:.15em}section{page-break-inside:avoid;border-top:2px solid #c4a35a;padding:30px 0}img{display:block;width:100%;max-height:560px;object-fit:contain;border-radius:16px;margin:18px 0}h2{margin-bottom:10px}h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:#836b35;margin-top:22px}p{white-space:pre-wrap;line-height:1.55}</style></head><body><header><div>FATHER &amp; SON EXPEDITION</div><h1>OVERFELT</h1><p>Las Vegas • August 2–7, 2026</p></header>${sections.join('')}</body></html>`;const blob=new Blob([html],{type:'text/html'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Overfelt_Mission_Memory_Book.html';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setText('archiveMsg','Memory book exported with notes and photos.')}
 function setupUI(){updateCountdown();setInterval(updateCountdown,1000);renderToday();renderSmartBriefing();renderMissionTimeline();setInterval(renderMissionTimeline,60000);renderItinerary();renderReservations();renderTravel();renderArchive();loadWeather();document.getElementById('refreshWeather').addEventListener('click',loadWeather);document.querySelectorAll('.segment-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.segment-btn').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.trip-panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tripPanel))}));const screens=document.querySelectorAll('.screen'),navButtons=document.querySelectorAll('.nav button');function showScreen(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));navButtons.forEach(b=>b.classList.toggle('active',b.dataset.screen===id));window.scrollTo({top:0,behavior:'smooth'})}navButtons.forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.go)));document.getElementById('unlock').addEventListener('click',()=>{const ok=document.getElementById('pin').value==='0802';document.getElementById('secret').classList.toggle('show',ok);setText('pinMsg',ok?'Access granted. Classified mission loaded.':'Access denied.');if(ok)localStorage.setItem('omcDadUnlocked','1')});if(localStorage.getItem('omcDadUnlocked')==='1')document.getElementById('secret').classList.add('show');document.querySelectorAll('[data-dad-check]').forEach(x=>{x.checked=localStorage.getItem('dad-'+x.dataset.dadCheck)==='1';x.addEventListener('change',()=>localStorage.setItem('dad-'+x.dataset.dadCheck,x.checked?'1':'0'))});document.getElementById('exportArchive').addEventListener('click',exportArchive);document.getElementById('clearArchive').addEventListener('click',async()=>{if(confirm('Clear every saved mission memory and photo on this device?')){itinerary.forEach(d=>localStorage.removeItem(`omc-memory-${d.date}`));await clearPhotos();await renderArchive();setText('archiveMsg','Archive cleared.')}});document.getElementById('closePhotoViewer').addEventListener('click',closePhotoViewer);document.getElementById('photoViewer').addEventListener('click',e=>{if(e.target.id==='photoViewer')closePhotoViewer()});const splash=document.getElementById('launchSplash'),aaronMessage=document.getElementById('aaronMessage');
+
+const starField=document.getElementById('starField');
+const fragmentColors=[
+  ['#fff8d3','rgba(255,242,178,.9)'],
+  ['#f4cd6b','rgba(244,205,107,.82)'],
+  ['#d99a32','rgba(217,154,50,.72)'],
+  ['#fff','rgba(255,255,255,.82)']
+];
+for(let i=0;i<84;i++){
+  const fragment=document.createElement('span');
+  const angle=(Math.PI*2*i/84)+((i%7)-3)*.017;
+  const distance=32+(i*29%58);
+  const x=Math.cos(angle)*distance;
+  const y=Math.sin(angle)*distance;
+  const color=fragmentColors[i%fragmentColors.length];
+  fragment.style.setProperty('--size',`${2+(i*7%6)}px`);
+  fragment.style.setProperty('--delay',`${(i%9)*.018}s`);
+  fragment.style.setProperty('--fragment-color',color[0]);
+  fragment.style.setProperty('--fragment-glow',color[1]);
+  fragment.style.setProperty('--burst-x',`${x*.43}vw`);
+  fragment.style.setProperty('--burst-y',`${y*.43}vh`);
+  fragment.style.setProperty('--coast-x',`${x*.72}vw`);
+  fragment.style.setProperty('--coast-y',`${y*.72}vh`);
+  fragment.style.setProperty('--fade-x',`${x*.88}vw`);
+  fragment.style.setProperty('--fade-y',`${y*.88}vh`);
+  fragment.style.setProperty('--final-x',`${x}vw`);
+  fragment.style.setProperty('--final-y',`${y}vh`);
+  const spin=(i%2?1:-1)*(120+(i*47%420));
+  fragment.style.setProperty('--burst-spin',`${spin*.36}deg`);
+  fragment.style.setProperty('--coast-spin',`${spin*.68}deg`);
+  fragment.style.setProperty('--fade-spin',`${spin*.86}deg`);
+  fragment.style.setProperty('--final-spin',`${spin}deg`);
+  starField.appendChild(fragment);
+}
 
 const dismissBriefing=()=>{
   splash.classList.add('dismissed');
