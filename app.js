@@ -1,4 +1,4 @@
-const APP_VERSION='6.2.6';
+const APP_VERSION='6.2.7';
 const trip=new Date('2026-08-02T12:46:00-05:00');
 const places={aria:{name:'ARIA Resort & Casino',address:'3730 S Las Vegas Blvd, Las Vegas, NV 89158',maps:'https://maps.apple.com/?q=ARIA%20Resort%20%26%20Casino&address=3730%20S%20Las%20Vegas%20Blvd%2C%20Las%20Vegas%2C%20NV%2089158'},sphere:{name:'Sphere',address:'255 Sands Ave, Las Vegas, NV 89169',maps:'https://maps.apple.com/?q=Sphere&address=255%20Sands%20Ave%2C%20Las%20Vegas%2C%20NV%2089169'},area15:{name:'AREA15',address:'3215 S Rancho Dr, Las Vegas, NV 89102',maps:'https://maps.apple.com/?q=AREA15&address=3215%20S%20Rancho%20Dr%2C%20Las%20Vegas%2C%20NV%2089102'},bavettes:{name:"Bavette's Steakhouse & Bar",address:'3770 S Las Vegas Blvd, Las Vegas, NV 89109',maps:'https://maps.apple.com/?q=Bavette%27s%20Steakhouse%20%26%20Bar&address=3770%20S%20Las%20Vegas%20Blvd%2C%20Las%20Vegas%2C%20NV%2089109'},las:{name:'Harry Reid International Airport',address:'5757 Wayne Newton Blvd, Las Vegas, NV 89119',maps:'https://maps.apple.com/?q=Harry%20Reid%20International%20Airport&address=5757%20Wayne%20Newton%20Blvd%2C%20Las%20Vegas%2C%20NV%2089119'}};
 const uber=p=>`https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(p.address)}&dropoff[nickname]=${encodeURIComponent(p.name)}`;
@@ -60,16 +60,23 @@ const buildExplosionFragments=()=>{
   const height=window.innerHeight;
   const originX=width*.82;
   const originY=height-129;
+  const diagonal=Math.hypot(width,height);
+  const random=n=>{
+    const value=Math.sin(n*12.9898)*43758.5453;
+    return value-Math.floor(value);
+  };
   for(let i=0;i<52;i++){
     const fragment=document.createElement('span');
-    const targetX=width*(.035+(((i*47)%101)/100)*.93);
-    const targetY=height*(.025+(((i*67)%103)/102)*.86);
-    const x=targetX-originX;
-    const y=targetY-originY;
+    const angle=Math.PI+(random(i+3)*Math.PI*.58);
+    const distance=diagonal*(.28+random(i+19)*.82);
+    const x=Math.cos(angle)*distance;
+    const y=Math.sin(angle)*distance;
     const spin=(i%2?1:-1)*(90+(i*43%330));
     fragment.style.setProperty('--origin-x',`${originX}px`);
     fragment.style.setProperty('--origin-y',`${originY}px`);
-    fragment.style.setProperty('--size',`${2+(i*5%6)}px`);
+    fragment.style.setProperty('--size',`${2+Math.round(random(i+41)*6)}px`);
+    fragment.style.setProperty('--delay',`${(random(i+71)*.13).toFixed(3)}s`);
+    fragment.style.setProperty('--duration',`${(4.25+random(i+97)*1.25).toFixed(3)}s`);
     fragment.style.setProperty('--fragment-color',fragmentColors[i%fragmentColors.length]);
     fragment.style.setProperty('--burst-x',`${x*.38}px`);
     fragment.style.setProperty('--burst-y',`${y*.38}px`);
