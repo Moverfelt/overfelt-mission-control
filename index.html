@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#09090b"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Mission Control"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="stylesheet" href="styles.css?v=7.0.0"><title>Overfelt Mission Control</title></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#09090b"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Mission Control"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="stylesheet" href="styles.css?v=7.1.0"><title>Overfelt Mission Control</title></head><body>
 <div id="launchSplash" class="launch-splash" aria-hidden="true">
   <button id="dismissSplash" class="launch-splash-skip" type="button" aria-label="Skip mission briefing">SKIP</button>
 
@@ -67,6 +67,8 @@
 <article id="liveModeCard" class="card live-mode-card"></article>
 <article id="dailyRevealCard" class="card gap daily-reveal-card"></article>
 <article id="aaronMissionCard" class="card gap"></article>
+<article id="photoMissionCard" class="card gap"></article>
+<article class="card gap heat-shield-card"><div class="label">Heat Shield</div><div class="setting-row"><div><div class="value">Cooler mission route</div><div class="sub">Swap exposed walking for indoor connections, short rides and recovery stops.</div></div><button id="heatShieldToggle" class="setting-toggle" type="button" aria-pressed="false">OFF</button></div><div id="heatShieldPlan" class="heat-shield-plan" aria-live="polite"></div></article>
 <article class="card gap"><div class="label">What Now?</div><div class="value">Tell Mission Control what you need.</div><div class="decision-controls"><label>TIME<select id="whatNowTime"><option value="1">About 1 hour</option><option value="2" selected>About 2 hours</option><option value="4">Half a day</option></select></label><label>ENERGY<select id="whatNowEnergy"><option value="low">Running low</option><option value="medium" selected>Normal</option><option value="high">Ready to go</option></select></label><label>VIBE<select id="whatNowVibe"><option value="indoor">Stay inside</option><option value="food">Feed us</option><option value="wow" selected>Impress us</option><option value="chill">Keep it easy</option></select></label></div><button id="whatNowGo" class="primary compact-primary" type="button">MAKE THE CALL</button><div id="whatNowResult" class="decision-result" aria-live="polite"></div></article>
 <article class="card gap"><div class="label">Mission Patch Vault</div><div id="patchVault" class="patch-vault"></div></article>
 <article id="surpriseClueCard" class="card gap"></article>
@@ -93,6 +95,14 @@
 <div id="travelPanel" class="trip-panel"><div id="flightCards" class="reservation-list"></div><div id="connectionAssistant" class="reservation-list gap"></div><div id="hotelCard" class="reservation-list gap"></div></div>
 </section>
 
+<section id="navradar" class="screen"><div class="eyebrow">LIVE FIELD NAVIGATION</div><h2>Vegas Radar</h2><p class="lead">You are the center. Mission locations arrange themselves around the direction you are facing.</p>
+<article class="card radar-card"><div class="radar-toolbar"><div><div class="label">Orientation</div><div id="radarHeading" class="value">Compass standing by</div><div id="radarStatus" class="sub">Tap Activate Radar and allow location and motion access.</div></div><button id="activateRadar" class="secondary" type="button">ACTIVATE</button></div>
+<div id="radar" class="radar" aria-label="Live directional radar"><span class="radar-north">AHEAD</span><span class="radar-east">RIGHT</span><span class="radar-south">BACK</span><span class="radar-west">LEFT</span><div class="radar-ring radar-ring-one"></div><div class="radar-ring radar-ring-two"></div><div class="radar-cross radar-cross-h"></div><div class="radar-cross radar-cross-v"></div><div class="radar-you"><span></span><small>YOU</small></div><div id="radarMarkers"></div></div>
+<div class="radar-actions"><button id="demoRadar" class="action-button secondary-action" type="button">DEMO FROM ARIA</button><button id="stopRadar" class="action-button secondary-action" type="button">STOP</button></div></article>
+<div id="radarList" class="radar-list"></div>
+<article class="card gap"><div class="label">Field Note</div><div class="sub">The radar shows direction and straight-line distance—not a safe walking route. Use Apple Maps for turn-by-turn directions and use rideshare when heat, traffic or distance makes walking a bad call.</div></article>
+</section>
+
 <section id="dad" class="screen"><div class="eyebrow">RESTRICTED ACCESS</div><h2>Dad Mode</h2><p class="lead">Private logistics, contingency tools and the classified Thursday mission.</p>
 <article class="card"><div class="label">Wolf Access</div><div class="value">Enter mission PIN</div><div class="pin-row"><input id="pin" inputmode="numeric" maxlength="4" placeholder="••••" aria-label="Mission PIN"><button id="unlock" class="secondary">UNLOCK</button></div><div id="pinMsg" class="tiny">Mission PIN: trip month and day.</div><button id="replayBriefing" class="briefing-replay" type="button">REPLAY MISSION BRIEFING</button></article>
 <div id="secret" class="secret dad-stack">
@@ -103,7 +113,8 @@
 </div></section>
 <section id="archive" class="screen"><div class="eyebrow">MISSION ARCHIVE</div><h2>Save the Story</h2><p class="lead">A few honest lines and the photos that tell the story. Saved privately on this device.</p>
 <article id="missionCompleteCard" class="card mission-complete-card"></article>
+<article id="missionAwardsCard" class="card gap mission-awards-card"></article>
 <div id="archiveDays" class="archive-list"></div>
 <article class="card gap"><div class="label">Archive Tools</div><div class="action-row"><button id="exportArchive" class="action-button" type="button">EXPORT MEMORY BOOK</button><button id="clearArchive" class="action-button danger" type="button">CLEAR ARCHIVE</button></div><div id="archiveMsg" class="tiny" aria-live="polite"></div></article>
 </section></main>
-<nav class="nav"><button class="active" data-screen="home">HOME</button><button data-screen="today">TODAY</button><button data-screen="trip">TRIP</button><button data-screen="dad">DAD</button><button data-screen="archive">ARCHIVE</button></nav><script src="app.js?v=7.0.0" defer></script></body></html>
+<nav class="nav"><button class="active" data-screen="home">HOME</button><button data-screen="today">TODAY</button><button data-screen="trip">TRIP</button><button data-screen="navradar">NAV</button><button data-screen="dad">DAD</button><button data-screen="archive">ARCHIVE</button></nav><script src="app.js?v=7.1.0" defer></script></body></html>
