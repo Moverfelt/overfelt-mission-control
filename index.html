@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#09090b"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Mission Control"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="stylesheet" href="styles.css?v=7.1.0"><title>Overfelt Mission Control</title></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#09090b"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Mission Control"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="stylesheet" href="styles.css?v=7.2.0"><title>Overfelt Mission Control</title></head><body>
 <div id="launchSplash" class="launch-splash" aria-hidden="true">
   <button id="dismissSplash" class="launch-splash-skip" type="button" aria-label="Skip mission briefing">SKIP</button>
 
@@ -67,7 +67,7 @@
 <article id="liveModeCard" class="card live-mode-card"></article>
 <article id="dailyRevealCard" class="card gap daily-reveal-card"></article>
 <article id="aaronMissionCard" class="card gap"></article>
-<article id="photoMissionCard" class="card gap"></article>
+<article id="photoMissionCard" class="card gap hidden-vegas-card"></article>
 <article class="card gap heat-shield-card"><div class="label">Heat Shield</div><div class="setting-row"><div><div class="value">Cooler mission route</div><div class="sub">Swap exposed walking for indoor connections, short rides and recovery stops.</div></div><button id="heatShieldToggle" class="setting-toggle" type="button" aria-pressed="false">OFF</button></div><div id="heatShieldPlan" class="heat-shield-plan" aria-live="polite"></div></article>
 <article class="card gap"><div class="label">What Now?</div><div class="value">Tell Mission Control what you need.</div><div class="decision-controls"><label>TIME<select id="whatNowTime"><option value="1">About 1 hour</option><option value="2" selected>About 2 hours</option><option value="4">Half a day</option></select></label><label>ENERGY<select id="whatNowEnergy"><option value="low">Running low</option><option value="medium" selected>Normal</option><option value="high">Ready to go</option></select></label><label>VIBE<select id="whatNowVibe"><option value="indoor">Stay inside</option><option value="food">Feed us</option><option value="wow" selected>Impress us</option><option value="chill">Keep it easy</option></select></label></div><button id="whatNowGo" class="primary compact-primary" type="button">MAKE THE CALL</button><div id="whatNowResult" class="decision-result" aria-live="polite"></div></article>
 <article class="card gap"><div class="label">Mission Patch Vault</div><div id="patchVault" class="patch-vault"></div></article>
@@ -114,7 +114,8 @@
 <section id="archive" class="screen"><div class="eyebrow">MISSION ARCHIVE</div><h2>Save the Story</h2><p class="lead">A few honest lines and the photos that tell the story. Saved privately on this device.</p>
 <article id="missionCompleteCard" class="card mission-complete-card"></article>
 <article id="missionAwardsCard" class="card gap mission-awards-card"></article>
+<article id="hiddenVegasArchive" class="card gap hidden-vegas-archive"></article>
 <div id="archiveDays" class="archive-list"></div>
 <article class="card gap"><div class="label">Archive Tools</div><div class="action-row"><button id="exportArchive" class="action-button" type="button">EXPORT MEMORY BOOK</button><button id="clearArchive" class="action-button danger" type="button">CLEAR ARCHIVE</button></div><div id="archiveMsg" class="tiny" aria-live="polite"></div></article>
 </section></main>
-<nav class="nav"><button class="active" data-screen="home">HOME</button><button data-screen="today">TODAY</button><button data-screen="trip">TRIP</button><button data-screen="navradar">NAV</button><button data-screen="dad">DAD</button><button data-screen="archive">ARCHIVE</button></nav><script src="app.js?v=7.1.0" defer></script></body></html>
+<nav class="nav"><button class="active" data-screen="home">HOME</button><button data-screen="today">TODAY</button><button data-screen="trip">TRIP</button><button data-screen="navradar">NAV</button><button data-screen="dad">DAD</button><button data-screen="archive">ARCHIVE</button></nav><script src="app.js?v=7.2.0" defer></script></body></html>
